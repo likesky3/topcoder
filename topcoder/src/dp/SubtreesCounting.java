@@ -57,7 +57,6 @@ public class SubtreesCounting {
 		System.out.println(obj.sumOfSizes(100000, 123, 46645, 4564579, 1000000000));
 	}
 }
-
 // split the original problem into smaller sub problem, 
 // here sub problem is what's the size of a subtree whose root is i with t children
 // then, a smaller sub problem again, with the first 0, 1, 2,... t children
