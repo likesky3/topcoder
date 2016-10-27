@@ -23,6 +23,7 @@ public class VocaloidsAndSongs {
 		}
 		return recur(S, gumi, ia, mayu);
 	}
+
 	private int recur(int s, int a, int b, int c) {
 //		System.out.printf("s=%d, a=%d, b=%d, c =%d, memo=%d\n", s, a, b,c, memo[s][a][b][c]);
 		int res = memo[s][a][b][c];
@@ -42,4 +43,5 @@ public class VocaloidsAndSongs {
 		memo[s][a][b][c] = res;
 		return res;
 	}
+
 }
