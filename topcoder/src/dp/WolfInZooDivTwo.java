@@ -50,6 +50,7 @@ public class WolfInZooDivTwo {
 					shouldRmv[j] = true;
 				}
 				
+				// produce bug in case, there are two same intervals and would be removed by another interval
 //				if (a.left <= b.left && a.right >= b.right) {
 //					shouldRmv[i] = true;
 //				}
