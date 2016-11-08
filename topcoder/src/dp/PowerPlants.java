@@ -30,10 +30,7 @@ public class PowerPlants {
 		N = connectionCost.length;
 		// prepare information
 		costTable = new int[N][N];
-		memo = new int[1<<N][1<<N];
-		for (int i = 0; i < memo.length; i++) {
-			Arrays.fill(memo[i], -1);
-		}
+		
 		for (int i = 0; i < N; i++) {
 			for (int j = 0; j < N; j++) {
 				char c = connectionCost[i].charAt(j);
@@ -52,9 +49,13 @@ public class PowerPlants {
 			}
 		}
 		for (int candStatus = 1; candStatus < 1 << N; candStatus++) {
+			memo = new int[1<<N][36*N];
+			for (int i = 0; i < memo.length; i++) {
+				Arrays.fill(memo[i], -1);
+			}
 			if ((candStatus & initStatus) > 0 && Integer.bitCount(candStatus) == numPlants) {
-				System.out.printf(">>>init=%s, cand=%s\n", Integer.toBinaryString(initStatus),
-						Integer.toBinaryString(candStatus));
+//				System.out.printf(">>>init=%s, cand=%s\n", Integer.toBinaryString(initStatus),
+//						Integer.toBinaryString(candStatus));
 				recur(initStatus, candStatus, 0);
 			}
 		}
@@ -66,8 +67,8 @@ public class PowerPlants {
 	private int minimumCost = Integer.MAX_VALUE;
 	private int[][] memo;
 	private int recur(int currStatus, int finalStatus, int cost) {
-		if (memo[currStatus][finalStatus] != -1)
-			return cost + memo[currStatus][finalStatus];
+		if (memo[currStatus][cost] != -1)
+			return  memo[currStatus][cost];
 		if (currStatus == finalStatus) {
 			minimumCost = Math.min(minimumCost, cost);
 			return minimumCost;
@@ -81,13 +82,17 @@ public class PowerPlants {
 				for (int i = 0; i < N; i++) {
 					if ((currStatus & (1 << i)) > 0) {
 						res = Math.min(res, recur(currStatus | (1<<j), finalStatus, cost + costTable[i][j]));
+//						System.out.printf("curr=%s, next=%s, cost=%d, res=%d\n", Integer.toBinaryString(currStatus),
+//								Integer.toBinaryString(currStatus | (1<<j)), cost, res);
 					}
 				}
 			}
 		}
-		System.out.printf("curr=%s, final=%s, cost=%d, res=%d\n", Integer.toBinaryString(currStatus),
-				Integer.toBinaryString(finalStatus), cost, res);
-		memo[currStatus][finalStatus] = res;
+		memo[currStatus][cost] = res;
+//		System.out.printf("curr=%s, final=%s, cost=%d, memo[%s][%s]=%d\n", Integer.toBinaryString(currStatus),
+//				Integer.toBinaryString(finalStatus), cost, res);
+//		System.out.printf("cost=%d, memo[%s][%s]=%d\n", cost, Integer.toBinaryString(currStatus),
+//				Integer.toBinaryString(finalStatus), res);
 		return res;
 	}
 }
