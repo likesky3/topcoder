@@ -61,6 +61,7 @@ public class OrderOfOperationsDiv2 {
 		return totalCost;
 	}
 	
+	// the point of view here: the access status of memory
 	public int minTime(String[] s) {
 		int n = s.length;
 		int m = s[0].length();
@@ -86,7 +87,7 @@ public class OrderOfOperationsDiv2 {
 				int emask = nmask - mask;
 				int k = Integer.bitCount(emask);
 				dist[nmask] = Math.min(dist[nmask], dist[mask] + k * k);
-				System.out.printf("mask=%d, i=%d, dist[%d]=%d\n", mask, i, nmask, dist[nmask]);
+//				System.out.printf("mask=%d, i=%d, dist[%d]=%d\n", mask, i, nmask, dist[nmask]);
 			}
 		}
 		return dist[fmask];
@@ -99,7 +100,7 @@ public class OrderOfOperationsDiv2 {
 				 "001",
 				 "010"
 				};
-		System.out.println(obj.minTime(s) == 3);
+//		System.out.println(obj.minTime2(s) == 3);
 		
 		s = new String[] {
 						 "11101",
@@ -108,7 +109,7 @@ public class OrderOfOperationsDiv2 {
 						 "00000",
 						 "11000"
 						};
-//		System.out.println(obj.minTime(s) == 9);
+//		System.out.println(obj.minTime2(s) == 9);
 		
 		//test 3
 		s = new String[]{"01000100000000001101", 
@@ -131,6 +132,62 @@ public class OrderOfOperationsDiv2 {
 						"00100000100000010100", 
 						"00000100000010000010", 
 						"00000000010010000000"};
-//		System.out.println(obj.minTime(s) == 26);
+//		System.out.println(obj.minTime2(s) == 26);
+		
+		s = new String[] {"11111111111111111111"};
+		System.out.println(obj.minTime2(s) == 400);
+	}
+
+	// the point of view here: the execution status of instructions 
+	public int minTime2(String[] s) {
+		//prepare information
+		int N = s.length;
+		M = s[0].length();
+		int[] t = new int[N]; // transformed each string in s to a int in t
+		int[] dp = new int[1<<N]; // dp[i] is an executed status mask, if the k-th bit in dp[i] is 1, then the k-th instruction has been executed
+		int[] mem = new int[1<<N]; // memory status corresponding to each executed status, the k-th bit in mem[i] is 1 says the k-th cell is in the cache
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < M; j++) {
+				t[i] = t[i] * 2 + s[i].charAt(j) - '0';
+			}
+		}
+		
+		// start dp
+		for (int status = 1; status < 1 << N; status++) {
+			dp[status] = 4000; // limit time cost is 20^2=400
+			for (int i = 0; i < N; i++) {
+				if (((1 << i) & status) > 0) { // instruction i should be executed when come to "status"
+					int prevStatus = status & (~(1 << i)); // clear one bit in status
+					int newCost = dp[prevStatus] + calCost(t[i], mem[prevStatus]); 
+					if ( newCost < dp[status]) {
+						dp[status] = newCost;
+						mem[status] = updateMem(mem[prevStatus], t[i]); 
+					}
+				}
+			}
+		}
+		return dp[(1<<N) - 1];
+	}
+	
+	private int M;
+	private int calCost(int status, int mem) {
+		int k = 0;
+		for (int i = 0; i < M; i++) {
+			if (((1 << i) & status) > 0 && ((1 << i) & mem) == 0) {
+				// cell needed in status is not in cache yet
+				k++;
+			}
+		}
+		return k * k;
+	}
+	
+	private int updateMem(int prevMem, int status) {
+		int mem = prevMem;
+		for (int i = 0; i < M; i++) {
+			if (((1 << i) & status) > 0 && ((1 << i) & prevMem) == 0) {
+				mem |= (1 << i);
+			}
+		}
+		return mem;
 	}
 }

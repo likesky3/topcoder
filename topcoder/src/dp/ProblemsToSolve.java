@@ -1,4 +1,4 @@
-package dp;
+package dp;import javax.swing.text.PlainDocument;
 
 public class ProblemsToSolve {
 	// This is greedy strategy, the correctness should be proved, often it would fail at some case, e.g. test case 2
@@ -42,10 +42,26 @@ public class ProblemsToSolve {
 		ProblemsToSolve obj = new ProblemsToSolve();
 		int[] A = {1, 2, 3};
 //		System.out.println(obj.minNumber(A, 2));
-		System.out.println(obj.minNumber(A, 2) == 2);
+		System.out.println(obj.minNumber2(A, 2) == 2);
 		
 		// test case 2
 		A = new int[]{9, 11, 2, 7, 3, 1, 15, 2, 15, 14, 15, 4, 13, 7, 3, 12, 17, 7, 4, 3};
-		System.out.println(obj.minNumber(A, 11) == 4);
+		System.out.println(obj.minNumber2(A, 11) == 4);
+	}
+	
+	public int minNumber2(int[] pleasantness, int variety) {
+		int N = pleasantness.length;
+		if (N <= 1)
+			return 1;
+		int needDo = N;
+		for (int i = 1; i < N; i++) {
+			for (int j = 0; j < i; j++) {
+				if (Math.abs(pleasantness[i] - pleasantness[j]) >= variety) {
+					needDo = Math.min(needDo, ((i - j) + 1) / 2 + (j + 1) / 2 + 1);
+				}
+			}
+			
+		}
+		return needDo;
 	}
 }

@@ -21,11 +21,14 @@ public class Stamp {
 				A[i] = 4;
 		}
 		int res = oo;
+		//try all the posibility of length of the stamp
 		for (int len = 1; len <= N; len++) {
 			Arrays.fill(cost, oo);
 			cost[0] = 0;
+			//dynamic program for the minimum cost
 			for (int i = 0; i < N; i++) {
 				int color = 7;
+				//with each position i, we try to paint until the furthest position j as long as we can use just 1 color
 				for (int j = i; j < N; j++) {
 					color &= A[j];
 					if (color == 0) break; // A[j] is a new color
