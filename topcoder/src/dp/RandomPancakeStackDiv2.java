@@ -3,7 +3,7 @@ package dp;
 public class RandomPancakeStackDiv2 {
 	public double expectedDeliciousness(int[] d) {
 		int N = d.length;
-		// dp[i][j]:the expected deliciousness with i pancakes remaining, and the current size of serving stack is s 
+		// dp[i][j]:the expected deliciousness with i pancakes remaining, and the current size of serving stack is j 
 		double[][] dp = new double[N + 1][N + 1];
 		for (int t = 1; t <= N; t++) {
 			for (int s = 0; s < N; s++) {
