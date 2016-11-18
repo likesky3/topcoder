@@ -18,8 +18,8 @@ public class StrIIRec {
 				}
 				used[j] = true;
 				int cnt = 0; // inv count brought by current letter
-				for (int k = 0; k < n; k++) {
-					if (!used[k] && k < j) {
+				for (int k = 0; k < j; k++) {
+					if (!used[k]) {
 						cnt++;
 					}
 				}
