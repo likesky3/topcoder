@@ -48,4 +48,6 @@ public class StringWeightDiv2 {
 	
 	private final int  MOD = 1000000009;
 	private int[][] memo; // memo[a][L] is number of ways of building a string of length L using an alphabet with a letters.
+	
+	
 }
