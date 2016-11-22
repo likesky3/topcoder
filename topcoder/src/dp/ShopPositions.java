@@ -57,6 +57,7 @@ public class ShopPositions {
 		int[] c = {100, 90, 80, 70, 60, 50, 40, 30, 20, 10, 1, 1, 1, 1, 1};
 		ShopPositions obj = new ShopPositions();
 		System.out.println(obj.maxProfit(1, 5, c));
-		
+//		c = new int[] {1, 2};
+//		System.out.println(obj.maxProfit(1, 5, c));
 	}
 }
