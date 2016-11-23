@@ -24,6 +24,8 @@ public class RandomOption {
 	private double recur(int mask, int last) {
 		if (memo[mask][last] != -1)
 			return memo[mask][last];
+		if (mask == 0) // all keys have been arranged.
+			return 1;
 		double ans = 0;
 		int t = 0;
 		for (int x = 0; x < n; x++) {
@@ -36,10 +38,7 @@ public class RandomOption {
 				t++;
 			}
 		}
-		if (t == 0)
-			memo[mask][last] = 1;
-		else
-			memo[mask][last] = ans / t;
+		memo[mask][last] = ans / t;
 		return memo[mask][last];
 	}
 	

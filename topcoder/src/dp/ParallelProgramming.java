@@ -121,4 +121,84 @@ public class ParallelProgramming {
 			this.neighs = new ArrayList<Node>();
 		}
 	}
+	
+	public int minTime2(int[] time, String[] prec) {
+		// preprocess
+		int N = time.length;
+		Proc[] procs = new Proc[N];
+		for (int i = 0; i < N; i++) {
+			procs[i] = new Proc(i, time[i]);
+		}
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				if (j != i && prec[i].charAt(j) == 'Y') {
+					if (j == 44) {
+						System.out.printf("i=%d, cost=%d\n", i, procs[i].cost);
+					}
+					procs[i].successors.add(procs[j]);
+					// the below statement is not enough to judge whether i and j forms circle
+					// consider 0->1->2 and 2->0
+//					if (procs[j].successors.contains(procs[i]))
+//						return -1;
+					procs[j].indegree++;
+				}
+			}
+		}
+		
+		int result = 0;
+		for (int t = 0; t < N; t++) {
+			// select the procs which has no dependent and need the least time to finish execution
+			Proc toExec = null;
+			for (int i = 0; i < N; i++) {
+				if (procs[i].indegree == 0 && procs[i].cost > 0 && (toExec == null || toExec.cost > procs[i].cost)) {
+					toExec = procs[i];
+				}
+			}
+			if (toExec == null)
+				break;
+			System.out.printf("t=%d, curr proc[%d]: timecost=%d\n", t,toExec.label, toExec.cost);
+			// update other peers which are executing at the same time
+			for (int i = 0; i < N; i++) {
+				if (i != toExec.label && procs[i].indegree == 0 && !toExec.successors.contains(procs[i])
+						&& procs[i].cost > 0) {
+//					procs[i].cost = Math.max(procs[i].cost - toExec.cost, 0);
+					procs[i].cost -= toExec.cost;
+					if (procs[i].cost <= 0) { // once forgot!!!!!!
+						for (Proc p : procs[i].successors) {
+							p.indegree--;
+						}
+					}
+					System.out.printf("proc[%d].cost=%d\n", i, procs[i].cost);
+				}
+			}
+			// set cost toExec to 0, this is also a sign that this proc has been finished
+			result += toExec.cost;
+			toExec.cost = 0;
+			// update successors
+			for (Proc p : toExec.successors) {
+				p.indegree--;
+			}
+		}
+		// check if there is circle in the graph
+		for (int i = 0; i < N; i++) {
+			if (procs[i].cost > 0) {
+				return -1;
+//				System.out.printf("prcos[%d]:cost=%d, indegree=%d\n", i, procs[i].cost, procs[i].indegree);
+			}
+		}
+		return result;
+	}
+	
+	private class Proc {
+		public int label;
+		public int cost;
+		public int indegree;
+		public Set<Proc> successors;
+		public Proc(int label, int costTime) {
+			this.label = label;
+			this.cost = costTime;
+			successors = new HashSet<Proc>();
+		}
+		
+	}
 }

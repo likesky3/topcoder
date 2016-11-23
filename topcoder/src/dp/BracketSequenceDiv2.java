@@ -63,4 +63,5 @@ public class BracketSequenceDiv2 {
 		}
 		return i;
 	}
+	
 }
