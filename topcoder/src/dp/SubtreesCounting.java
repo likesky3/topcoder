@@ -17,6 +17,7 @@ public class SubtreesCounting {
 		for (int i = 1; i < n - 1; i++) {
 //			a[i] = (b * a[i - 1] + c) % m; // overflow at test cast 5
 			a[i] = (int)((b * (long)a[i - 1] + c) % m);
+			System.out.printf("a[%d]=%d\n", i, a[i]);
 		}
 		for (int i = 1; i < n; i++) {
 			parent[i] = a[i - 1] % i; // parent[i] is ensured < i
@@ -53,7 +54,7 @@ public class SubtreesCounting {
 	
 	public static void main(String[] args) {
 		SubtreesCounting obj = new SubtreesCounting();
-		System.out.println(obj.sumOfSizes(5,1,2,3,100));
+//		System.out.println(obj.sumOfSizes(5,1,2,3,100));
 		System.out.println(obj.sumOfSizes(100000, 123, 46645, 4564579, 1000000000));
 	}
 }
