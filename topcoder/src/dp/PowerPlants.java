@@ -12,7 +12,7 @@ public class PowerPlants {
 		String[] connectionCost = {"C4J8HNHKEU5YN", "HTWL0PKM6PR0S", "8VMRL3NZ85BLS", "F30R1H39142WK", "HU28Y6TRAOSV0", "BZ6TIPXSGFB1Y", "CFQ2V1F5DS8B0", "EBLEKOGEQ1L49", "Y47X5GCHYICSW", "MYNRFEL9VLAYU", "AYLLWO4QLIV2N", "040511G4K6A2Z", "50N4FHYXD0M92"};
 		String plantList = "YNNNNNNYNNNNN";
 		int numPlants = 11;
-//		System.out.println(obj.minCost(connectionCost, plantList, numPlants));
+		System.out.println(obj.minCost(connectionCost, plantList, numPlants));
 		connectionCost = new String[]{"1ABCD",
 				 "35HF8",
 				 "FDM31",

@@ -6,12 +6,16 @@ import java.util.List;
 public class OnTime {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		String[] buses = {"4 9 40 8080 1886", "5 1 305 7627 2042", "8 0 1496 2844 3229", "4 0 3035 1497 6538", "2 6 5086 267 4256", "2 5 2620 7283 5405", "7 8 2814 6313 6645", "8 0 5826 1037 4473", "0 1 952 3101 8975", "0 2 5695 623 2227", "5 7 9486 384 1746", "1 2 2591 5600 4713", "2 9 1891 1645 6498", "2 3 2019 6981 2571", "2 9 2062 333 4428", "9 2 1049 6399 5098", "6 8 242 8713 9460", "2 0 6618 959 2020", "2 8 7099 2178 8033", "3 9 420 2022 878", "6 1 3019 3579 7671", "4 8 1785 678 4516", "2 7 635 3307 7028", "4 9 4792 3622 3277", "8 6 3534 4137 5837", "9 6 2635 2571 370", "4 0 7096 24 2986", "0 7 5560 777 3378", "4 8 4343 4183 6671", "3 0 2733 3171 4318", "5 0 279 4431 2301", "1 0 2155 6212 3770", "0 9 5659 1134 7609", "8 2 1419 4615 4726", "5 4 4761 2930 5563", "5 9 6886 908 3945", "0 7 3578 4230 2970", "7 1 1439 297 1520", "5 8 1123 8239 870", "8 4 6476 3154 311", "5 1 2107 6952 5526", "4 3 6654 35 8230", "8 7 1810 7497 9427"};
 		OnTime obj = new OnTime();
-//		System.out.println(obj.minCost(10, 5747, buses));
+		System.out.println(obj.minCost(10, 5747, buses));
 		buses = new String[]{"0 1 0 4 3", "1 2 5 3 4", "1 2 5 4 3", "0 2 0 1001 2"};
-		System.out.println(obj.minCost(3, 1000, buses));
+//		System.out.println(obj.minCost(3, 1000, buses));
+		buses = new String[]{"0 1 0 5 1", "1 2 6 1 40", "0 1 1 2 5", "1 2 4 2 5"};
+//		System.out.println(obj.minCost(3, 7, buses));
+		buses = new String[]{"0 1 0 5 3", "1 2 5 3 4"};
+//		System.out.println(obj.minCost(3, 8, buses));
+
 	}
 	
 	public int minCost(int N, int T, String[] buses) {
@@ -95,4 +99,66 @@ public class OnTime {
 		}
 	}
 
+	public int minCost2(int N, int T, String[] buses) {
+		this.N = N;
+		this.T = T;
+		M = buses.length;
+		busesInfo = new Bus2[M];
+		for (int i = 0; i < M; i++) {
+			String[] tmp = buses[i].split(" ");
+			int[] tmp2 = new int[tmp.length];
+			for (int j = 0; j < tmp.length; j++) {
+				tmp2[j] = Integer.parseInt(tmp[j]);
+			}
+			busesInfo[i] = new Bus2(tmp2[0], tmp2[1], tmp2[2], tmp2[3], tmp2[4]);
+		}
+		int minCost = INF;
+		for (int i = 0; i < M; i++) {
+			if (busesInfo[i].beg == 0) {
+				minCost = Math.min(busesInfo[i].cost + recur(i, busesInfo[i].end, busesInfo[i].depart + busesInfo[i].time), minCost);
+			}
+		}
+		return minCost >= INF ? -1 : minCost;
+	}
+	
+	private int M;
+	private Bus2[] busesInfo;
+//	private int N;
+//	private int T;
+	private final int INF = 50000001;
+	private int recur(int i, int stationNow, int usedTime) {
+		if (stationNow == N - 1) {
+			return (usedTime <= T) ? 0 : INF;
+		} else if (usedTime >= T) {
+			return INF;
+		}
+		
+		Bus2 prev = busesInfo[i];
+		int minCost = INF;
+		for (int j = 0; j < M; j++) {
+			if (j == i) continue;
+			Bus2 curr = busesInfo[j];
+			if (curr.beg == prev.end && curr.depart > usedTime) {
+				minCost = Math.min(minCost, curr.cost + recur(j, curr.end, curr.depart + curr.time));
+//				System.out.printf("i=%d, j =%d, stationNow=%d, usedTime=%d, minCost=%d\n", i, j, stationNow, usedTime, minCost);
+			}
+		}
+//		System.out.printf("---i=%d, stationNow=%d, usedTime=%d, minCost=%d\n", i, stationNow, usedTime, minCost);
+		return minCost;
+	}
+	
+	private class Bus2 {
+		int beg;
+		int end;
+		int depart;
+		int time;
+		int cost;
+		public Bus2(int beg, int end, int depart, int time, int cost) {
+			this.beg = beg;
+			this.end = end;
+			this.depart = depart;
+			this.time = time;
+			this.cost = cost;
+		}
+	}
 }

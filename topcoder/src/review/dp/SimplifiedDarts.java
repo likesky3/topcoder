@@ -1,4 +1,4 @@
-package dp;
+package review.dp;
 
 import java.util.Arrays;
 
@@ -6,9 +6,10 @@ public class SimplifiedDarts {
 
 	public static void main(String[] args) {
 		SimplifiedDarts obj = new SimplifiedDarts();
-		System.out.println(obj.tryToWin(1, 5, 50, 50));
+		System.out.println(obj.tryToWin(5, 2, 50, 25));
+		System.out.println(obj.tryToWin2(5, 2, 50, 25));
 	}
-
+	
 	public double tryToWin(int W, int N, int P1, int P2) {
 		memo = new double[W + 1][N + 1];
 		for (double[] a1 : memo)
@@ -46,4 +47,5 @@ public class SimplifiedDarts {
 		}
 		return dp[W][N] * 100;
 	}
+
 }

@@ -3,7 +3,6 @@ package review.dp;
 public class SmallBricks31 {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 
 	}
 	
@@ -35,7 +34,7 @@ public class SmallBricks31 {
 	private int w;
 	private final int MOD = 1000000007;
 	
-	// calculate number of structs we can get at heigh h with prev row being prevMask and current row is currMask,
+	// calculate number of structure we can get at height h with prev row being prevMask and current row is currMask,
 	// at this moment we are considering position k in current row
 	private void recur(int h, int prevMask, int k, int currMask) {
 		if (k == w) {

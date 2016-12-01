@@ -40,6 +40,7 @@ public class SpellCardsEasy {
 		return res;
 	}
 	
+	// would timeout
 	public int maxDamage1(int[] level, int[] damage) {
 		return recur(level, damage, new boolean[level.length]);
 	}

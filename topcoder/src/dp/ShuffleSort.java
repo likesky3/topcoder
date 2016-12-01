@@ -15,7 +15,14 @@ public class ShuffleSort {
 //		System.out.println(obj.shuffle3(cards));
 	}
 	
-	// f(n) = 1 + t/n * (f(n-1) - 1) + (1 - t/n) * f(n)
+	// how to understand f(n-1) -1?
+	// f(n) : shuffle first, then judge
+	// t(n): judge
+	// the probability that at least one card is removed (if t of the n cards are equal to the minimum card,
+	// then the probability is t / n
+	// f(n) = 1 + t(n)
+	// t(n) = t/n * t(n - 1) + (1 - t/n) * f(n)
+	// so f(n) = 1 + t/n * (f(n-1) - 1) + (1 - t/n) * f(n)
 	//--> f(n) = f(n - 1) + n/t - 1;
 	//--> f(n) - f(n - 1) = n/t - 1;
 	

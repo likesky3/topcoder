@@ -5,9 +5,14 @@ public class WolfInZooDivTwo {
 
 	public static void main(String[] args) {
 		WolfInZooDivTwo obj = new WolfInZooDivTwo();
-		String[] L = {"0 4 2 7"};
-		String[] R = {"3 9 5 9"};
-//		System.out.println(obj.count(10, L, R));
+		String[] L = {"1"};
+		String[] R = {"2"};
+//		System.out.println(obj.count(3, L, R));
+//		System.out.println(obj.count2(3, L, R));
+		L = new String[]{"0 4 2 7"};
+		R = new String[]{"3 9 5 9"};
+		System.out.println(obj.count(10, L, R));
+		System.out.println(obj.count2(10, L, R));
 		L = new String[]{"0 2 2 7 10 1","3 16 22 30 33 38"," 42 44 49 51 57 60 62"," 65 69 72 74 77 7","8 81 84 88 91 93 96"};
 		R = new String[]{"41 5 13 22 12 13 ","33 41 80 47 40 ","4","8 96 57 66 ","80 60 71 79"," 70 77 ","99"," 83 85 93 88 89 97 97 98"};
 //		System.out.println(obj.count(100, L, R));
@@ -16,10 +21,11 @@ public class WolfInZooDivTwo {
 //		System.out.println(obj.count(5, L, R));
 		L = new String[]{"5 7 12 11 7 8 2 17 14 0 7 11 8 19 20 11 14 4 20 1", "6 0"}; 
 		R = new String[]{"14 19 18 15 15 14 15 20 16 1 15 18 19 20 20 18 17", " 16 20 17 12"};
-//		System.out.println(obj.count(21, L, R));
+		System.out.println(obj.count(21, L, R));
+		System.out.println(obj.count2(21, L, R));
 		L = new String[] {"40 75 5 82 49 75 70 34 75 63 33 64 88 15 69 72 2 ", "52 73 78 42 35 68 57 83 70 46 66 24 97 11 30 26 2 ", "51 2 21 87 63 91 98 57 7 67 17 85 28 61 65 100 67 ", "27 37 70 7 0 23 62 4 40 50 88 55 15 40 98 26 14 7 ", "72 102 54 57 83 26 69 61 15 61 68 15 46 33 95 60 1", "9 98 62 20 55 82 87 86 39 3 77 80 62 88 1 48 50 20", " 53 2 69 11 74"};
 		R = new String[] {"86 94 81 94 73 103 81 58 80 64 58 98 102 66 95 81", " 3 83 106 104 96 66 103 60 93 86 104 92 83 99 42 6", "3 104 80 89 87 103 94 102 101 104 57 100 90 80 107", " 90 105 106 107 87 44 41 86 25 100 102 99 68 99 74", " 89 80 64 85 102 71 43 12 105 103 102 63 89 27 100", " 92 88 90 75 79 105 95 96 75 55 106 62 64 96 90 93", " 91 101 84 103 103 104 106 11 107 74 29 60 21 95 7", "7 99"};
-		System.out.println(obj.count(108, L, R));
+//		System.out.println(obj.count(108, L, R));
 	}
 
 	public int count(int N, String[] L, String[] R) {
@@ -38,7 +44,7 @@ public class WolfInZooDivTwo {
 			for (int j = i + 1; j < M; j++) {
 				Interval a = intervals.get(i);
 				Interval b = intervals.get(j);
-				System.out.printf("a:%d %d  b:%d %d\n", a.left, a.right, b.left, b.right);
+//				System.out.printf("a:%d %d  b:%d %d\n", a.left, a.right, b.left, b.right);
 				// ensure we remove at most 1
 				if (a.left == b.left && a.right == b.right) {
 					shouldRmv[i] = true;
@@ -87,9 +93,10 @@ public class WolfInZooDivTwo {
 		for (int i = 1; i < validInters.length; i++) {
 			Interval p = validInters[i-1];
 			Interval q = validInters[i];
-			System.out.printf("%d %d\n", q.left, q.right);
+//			System.out.printf("p=[%d, %d], q=[%d, %d]\n", p.left, p.right, q.left, q.right);
 			for (int j = p.right + 1; j < q.right; j++) {
 				dp[j] = myPow(2, j - p.right) * dp[p.right] % MOD;
+//				System.out.printf("dp[%d]=%d\n", j, dp[j]);
 			}
 			if (p.right < q.left) {
 				dp[q.right] = (myPow(2, q.right - q.left + 1) - 1) * dp[q.left - 1] % MOD;
@@ -97,13 +104,15 @@ public class WolfInZooDivTwo {
 				long part1 = (myPow(2, q.right - p.right) - 1) * dp[p.right] % MOD;
 				long part2 = 0;
 				for (int j = q.left - 1; j < p.right; j++) {
-//					System.out.printf("p:%d %d, q:%d, %d\n", p.left, p.right, q.left, q.right);
 					part2 += dp[j];
 				}
-				//System.out.printf("i=%d, part1=%d, part2=%d\n", i, part1, part2);
+				
+				// below is not correct way to calculate part2, fail at some case
+				//long part2 = (myPow(2, p.right - q.left + 1) - 1) * dp[q.left - 1] % MOD; 
+//				System.out.printf("i=%d, part1=%d, part2=%d\n", i, part1, part2);
 				dp[q.right] = (part1 + part2) % MOD;
 			}
-			//System.out.printf("dp[%d]=%d\n", q.right, dp[q.right]);
+//			System.out.printf("dp[%d]=%d\n", q.right, dp[q.right]);
 		}
 		Interval last = validInters[validInters.length - 1];
 		if (N - 1 > last.right) {
@@ -156,4 +165,52 @@ public class WolfInZooDivTwo {
 		return res;
 	}
 	private final int MOD = 1000000007;
+	
+	public int count2(int n, String[] L, String[] R) {
+		N = n + 1; // transfer to 1-based
+		// parse the information, since we use 1-based indexing, below 2 lines are not correct
+//		arrL = getValues(L);
+//		arrR = getValues(R);
+		arrL = getValues2(L);
+		arrR = getValues2(R);
+		
+		memo = new int[N + 1][N + 1];
+		for (int[] a1 : memo) {
+			Arrays.fill(a1, -1);
+		}
+		return find(1, 0);
+	}
+	// currently at 'pos', the last 1 is at 'last'
+	private int find(int pos, int last) {
+		if (memo[pos][last] != -1)
+			return memo[pos][last];
+		if (pos == N) // all sections have been assigned proper value which satisfy the constrains hold by L[] & R[]
+			return 1;
+		long ways = find(pos + 1, pos); // put a one at 'pos'
+		boolean existsIntervalContainsNoWolf = false;
+		for (int i = 0; i < arrL.length; i++) {
+			existsIntervalContainsNoWolf |= (last < arrL[i] && pos == arrR[i]);
+		}
+		if (!existsIntervalContainsNoWolf)
+			ways += (long)find(pos + 1, last); // put a zero at 'pos'
+		ways %= MOD;
+		memo[pos][last] = (int)ways;
+		return (int)ways;
+	}
+	
+	private int[] getValues2(String[] A) {
+		StringBuilder sb = new StringBuilder();
+		for (String s : A) {
+			sb.append(s);
+		}
+		String[] tmp = sb.toString().split(" ");
+		int[] result = new int[tmp.length];
+		for (int i = 0; i < tmp.length; i++) {
+			result[i] = Integer.parseInt(tmp[i]) + 1;
+		}
+		return result;
+	}
+	private int N;
+	private int[][] memo;
+	private int[] arrL, arrR;
 }

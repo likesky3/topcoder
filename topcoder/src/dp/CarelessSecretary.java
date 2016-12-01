@@ -1,10 +1,13 @@
 package dp;
 
+import java.util.Arrays;
+
 public class CarelessSecretary {
 
 	public static void main(String[] args) {
 		CarelessSecretary obj = new CarelessSecretary();
-		System.out.println(obj.howMany(714, 9));
+		System.out.println(obj.howMany(714, 4));
+		System.out.println(obj.howMany2(714, 4));
 	}
 	
 	private final int MOD = 1000000007;
@@ -30,6 +33,33 @@ public class CarelessSecretary {
 			result %= MOD;
 		}
 		return result;
+	}
+	
+	// recursive version would timeout
+	public int howMany2(int N, int K) {
+		this.N = N;
+		this.K = K;
+		dp = new int[N];
+		Arrays.fill(dp, -1);
+		assigned = new boolean[N];
+		return recur(0);
+	}
+	private int N, K;
+	private int[] dp;
+	private boolean[] assigned;
+	private int recur(int i) {
+		if (dp[i] != -1) return dp[i];
+		if (i == K) return dp[i] = (int)getFactor(N - i);
+		long result = 0;
+		for (int j = 0; j < N; j++) {
+			if (j != i && !assigned[j]) {
+				assigned[j] = true;
+				result += recur(i + 1);
+				result %= MOD;
+				assigned[j] = false;
+			}
+		}
+		return (int)result;
 	}
 
 }
