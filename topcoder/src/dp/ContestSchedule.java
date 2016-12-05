@@ -35,6 +35,7 @@ public class ContestSchedule {
 				"468916697 496462595 92"
 				};
 		System.out.println(obj.expectedWinnings(contests));
+		System.out.println(obj.expectedWinnings2(contests));
 	}	
 	
 	public double expectedWinnings(String[] contests) {
@@ -52,7 +53,6 @@ public class ContestSchedule {
 		// key is end time, value is the max win probability John get by the end time
 		// since store each minute is too expensive, we only store end time of each contests
 		Map<Integer, Integer> map = new HashMap<>(); 
-		Map<Integer, List<Integer>> path = new HashMap<>();
 		map.put(0, 0);
 		for (int i = 0; i <= n; i++) {
 			System.out.printf("-------i=%d,end=%d-----\n", i, endArray[i]);
@@ -81,5 +81,31 @@ public class ContestSchedule {
 			this.end = e;
 			this.probability = p;
 		}
+	}
+	
+	public double expectedWinnings2(String[] contests) {
+		N = contests.length;
+		c = new Contest[N];
+		for (int i = 0; i < N; i++) {
+			String[] tmp = contests[i].split(" ");
+			c[i]= new Contest(Integer.parseInt(tmp[0]), Integer.parseInt(tmp[1]), Integer.parseInt(tmp[2]));
+		}
+		memo = new HashMap<>();
+		return recur(0) / 100;
+	}
+	Map<Integer, Double> memo;
+	Contest[] c;
+	int N;
+	private double recur(int currTime) {
+		if (memo.get(currTime) != null)
+			return memo.get(currTime);
+		double res = 0;
+		for (int i = 0; i < N; i++) {
+			if (c[i].start >= currTime) {
+				res = Math.max(res, c[i].probability + recur(c[i].end));
+			}
+		}
+		memo.put(currTime, res);
+		return res;
 	}
 }

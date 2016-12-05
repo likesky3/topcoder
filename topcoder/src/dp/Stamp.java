@@ -26,6 +26,8 @@ public class Stamp {
 			Arrays.fill(cost, oo);
 			cost[0] = 0;
 			//dynamic program for the minimum cost
+			// why we don't jump to the furthest position one color would arrive
+			// consider case RR*BBB
 			for (int i = 0; i < N; i++) {
 				int color = 7;
 				//with each position i, we try to paint until the furthest position j as long as we can use just 1 color

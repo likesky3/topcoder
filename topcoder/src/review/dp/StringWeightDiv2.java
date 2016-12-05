@@ -9,6 +9,7 @@ public class StringWeightDiv2 {
 		System.out.println(obj.comb(5, 2));
 		System.out.println(obj.countMinimums(50));
 		System.out.println(obj.countMinimums2(50));
+		System.out.println(obj.countMinimums3(50));
 	}
 	
 	private final int mod = 1000000009;
@@ -79,4 +80,24 @@ public class StringWeightDiv2 {
 		return result;
 	}
 	private int[][] dp;
+	
+	// method 3
+	public int countMinimums3(int L) {
+		if (L <= 26) {
+			long res = 1;
+			for (int i = 0; i < L; i++) {
+				res = (res * (26 - i)) % mod;
+			}
+			return (int)res;
+		} else {
+			long[][] dp = new long[L + 1][27];
+			dp[0][0] = 1;
+			for (int i = 1; i <= L; i++) {
+				for (int j = 1; j <= 26; j++) {
+					dp[i][j] = (dp[i - 1][j - 1] * j + dp[i - 1][j]) % mod;
+				}
+			}
+			return (int)dp[L][26];
+		}
+	}
 }

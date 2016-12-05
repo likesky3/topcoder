@@ -50,4 +50,24 @@ public class ChooseTheBestOne {
 		}
 		return nums.get(0);
 	}
+
+	// the previous version is more efficient version, the below version is more descriptive of the idea
+	public int countNumber3(int N) {
+		List<Integer> nums = new ArrayList<>();
+		for (int i = 1; i <= N; i++) {
+			nums.add(i);
+		}
+		int[] dp = new int[2];
+		for (int t = 1; t < N; t++) {
+			int counter = 1;
+			dp[t % 2] = (dp[(t - 1) % 2] + t * t * t - 1) % (N - (t - 1)); 
+			nums.remove(dp[t % 2]);
+			if (dp[t % 2] == nums.size())
+				dp[t % 2] = 0;
+		}
+		return nums.get(0);
+	}
+	
+
+	
 }

@@ -46,6 +46,26 @@ public class StringWeightDiv2 {
 		return res;
 	}
 	
+	public int countMinimums3(int L) {
+		if (L <= 26) {
+			long res = 1;
+			for (int i = 0; i < L; i++) {
+				res = (res * (26 - i)) % MOD;
+			}
+			return (int)res;
+		} else {
+			// dp[i][j]: number of ways to compose a string of length i with j letters
+			long[][] dp = new long[L + 1][27];
+			dp[0][0] = 1;
+			for (int i = 1; i <= L; i++) {
+				for (int j = 1; j <= 26; j++) {
+					dp[i][j] = (dp[i - 1][j - 1] * j + dp[i - 1][j]) % MOD;
+				}
+			}
+			return (int)dp[L][26];
+		}
+	}
+	
 	private final int  MOD = 1000000009;
 	private int[][] memo; // memo[a][L] is number of ways of building a string of length L using an alphabet with a letters.
 	
